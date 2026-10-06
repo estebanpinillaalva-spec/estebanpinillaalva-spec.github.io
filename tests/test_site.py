@@ -109,3 +109,7 @@ def test_web_publica_sin_telefono():
 def test_portada_enlaza_github():
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     assert "https://github.com/estebanpinillaalva-spec" in html
+
+
+def test_tfg_enlaza_repo_publico():
+    assert "https://github.com/estebanpinillaalva-spec/tfg-kart-direccion" in _caso("tfg-kart")
