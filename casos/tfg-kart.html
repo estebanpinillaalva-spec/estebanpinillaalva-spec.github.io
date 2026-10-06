@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TFG: dirección del kart · Esteban Pinilla</title>
+<meta name="description" content="Diagnóstico y rediseño del sistema de dirección de un kart con simulación en Simscape Multibody.">
+<link rel="stylesheet" href="../assets/css/estilo.css">
+</head>
+<body>
+<!-- fuentes: TFG DOCUMENTACION/TFG COMPLETO.pdf (págs. 49-51, tablas 3 y 4, conclusiones); CONTEXTO-PROYECTO.md §3 §5 §6.bis; brain/10-proyectos/tfg-kart.md §Autoría -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#casos">Casos</a><a href="../automatizacion.html">Automatización para empresas</a><a href="../index.html#contacto">Contacto</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Caso 02 · Trabajo de Fin de Grado</p>
+  <h1>La rueda exterior casi no giraba: encontré el punto muerto del mecanismo y rediseñé la dirección</h1>
+  <p class="lead">Simulé en Simscape Multibody la dirección de un kart diseñado en SolidWorks, encontré por qué no cumplía la geometría de Ackermann, la corregí y validé el resultado en el CAD.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">253 % → 127 %</span><span class="etiqueta">Ackermann simulado antes y después del rediseño (100 % = ideal)</span></div>
+    <div class="cifra"><span class="valor">112 %</span><span class="etiqueta">Ackermann verificado en CAD (17,81° interior / 14,81° exterior)</span></div>
+    <div class="cifra"><span class="valor">±13° → ~24°</span><span class="etiqueta">la singularidad del mecanismo se aleja del rango de uso</span></div>
+  </div>
+
+  <dl class="ficha">
+    <dt>Proyecto</dt><dd>TFG «Diseño e integración de sistema de dirección y transmisión para un vehículo tipo kart amateur». Grado en Ingeniería Mecánica, Universidad de Vigo. Calificación: 8,5</dd>
+    <dt>Fecha</dt><dd>2026</dd>
+    <dt>Autoría</dt><dd>Diseño CAD del kart en equipo con Martín. <strong>La simulación, el análisis y el rediseño de la dirección son trabajo propio.</strong> Los scripts de MATLAB los desarrollé dirigiendo a un agente de IA.</dd>
+  </dl>
+
+  <h2>El problema</h2>
+  <p>En una curva, la rueda interior tiene que girar más que la exterior para que las dos describan trayectorias concéntricas sin deslizar. Eso es la geometría de Ackermann. En un kart importa más porque no hay diferencial. El objetivo de diseño era un Ackermann del 100 %: con GeoGebra calculé que el brazo de la mangueta debía formar 107,62° con el eje del pivote.</p>
+  <p>Al simular el ensamblaje en Simscape, la primera versión no se comportaba así: la rueda exterior apenas giraba, el Ackermann superaba el 250 %, los dos lados respondían distinto y el mecanismo llegaba a una singularidad a ±13°.</p>
+
+  <h2>Qué hice</h2>
+  <ol>
+    <li><strong>De SolidWorks a Simscape.</strong> Exporté el ensamblaje y lo importé con <code>smimport</code> como modelo multicuerpo.</li>
+    <li><strong>Diagnóstico.</strong> Las manguetas estaban bien diseñadas y comprobadas, así que busqué la causa en otra parte: la placa de dirección. Con el anclaje lateral y alejado de las bieletas, el cuadrilátero articulado del lado exterior trabajaba cerca del punto muerto y la rueda exterior casi no recibía giro.</li>
+    <li><strong>Rediseño.</strong> Acerqué al eje de la columna el anclaje de las dos bieletas, con un anclaje central único. Así el mecanismo vuelve a ser simétrico.</li>
+    <li><strong>Modelo paramétrico construido por código.</strong> Con un agente de IA desarrollé scripts de MATLAB que generan el modelo corregido con la geometría real (vía de 619,15 mm, batalla de 1.056,57 mm, bieleta de 305 mm y brazo de 120 mm), lo simulan, calibran el brazo y generan las gráficas y la animación.</li>
+    <li><strong>Validación en el CAD.</strong> Articulé la dirección en SolidWorks y medí los ángulos reales para contrastarlos con la simulación.</li>
+  </ol>
+
+  <h2>Lo que se torció y cómo lo resolví</h2>
+  <ul>
+    <li>Los primeros resultados daban un Ackermann de más del doble del ideal. En lugar de justificarlos, analicé el modelo CAD hasta encontrar que el error venía de la placa de dirección.</li>
+    <li>La simulación del modelo corregido daba un Ackermann del 127 %, un ligero exceso que atribuí a pequeños errores de medida. Lo contrasté con el CAD articulado, que dio un <strong>112 %</strong> (17,81° / 14,81°).</li>
+  </ul>
+
+  <h2 id="resultado">Resultado</h2>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Indicador</th><th class="num">Anclaje lateral (antes)</th><th class="num">Anclaje central (después)</th></tr></thead>
+    <tbody>
+      <tr><td>% Ackermann simulado (giro a derecha / izquierda)</td><td class="num">≈253 % / ≈238 %</td><td class="num">≈127 % / ≈127 %</td></tr>
+      <tr><td>Error respecto a la rueda exterior ideal</td><td class="num">−2,95° / −1,27°</td><td class="num">−0,89° / −0,89°</td></tr>
+      <tr><td>Singularidad del mecanismo</td><td class="num">±13°</td><td class="num">~24°</td></tr>
+      <tr><td>Simetría entre giro a izquierda y a derecha</td><td class="num">asimétrico</td><td class="num">simétrico</td></tr>
+      <tr><td>Ackermann verificado en CAD</td><td class="num">—</td><td class="num">112 %</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure class="figura">
+    <img src="../assets/img/tfg/comparativa.webp" alt="Comparativa entre la placa defectuosa y la corregida: porcentaje de Ackermann y límite de giro">
+    <figcaption>Porcentaje de Ackermann y límite de giro con la placa defectuosa (anclaje lateral) y la corregida (anclaje central). Elaboración propia.</figcaption>
+  </figure>
+  <div class="galeria">
+    <figure class="figura"><img src="../assets/img/tfg/interior-exterior.webp" alt="Ángulo de la rueda interior frente a la exterior comparado con la curva ideal de Ackermann"><figcaption>Rueda interior frente a exterior, comparada con la curva ideal.</figcaption></figure>
+    <figure class="figura"><img src="../assets/img/tfg/error.webp" alt="Error de Ackermann a lo largo del recorrido de la dirección en el modelo corregido"><figcaption>Error de Ackermann en el modelo corregido.</figcaption></figure>
+    <figure class="figura"><img src="../assets/img/tfg/angulos.webp" alt="Ángulos de ambas manguetas durante el giro de la dirección"><figcaption>Ángulos de las manguetas durante el giro.</figcaption></figure>
+    <figure class="figura"><img src="../assets/img/tfg/diagrama.webp" alt="Diagrama de Ackermann: ángulo interior frente a exterior, con la curva ideal y la dirección paralela"><figcaption>Diagrama de Ackermann del modelo corregido.</figcaption></figure>
+  </div>
+  <figure class="figura">
+    <video controls preload="none" poster="../assets/img/tfg/animacion-poster.webp" src="../assets/video/tfg/animacion-direccion.mp4"></video>
+    <figcaption>Animación 2D de la dirección corregida, generada desde la simulación.</figcaption>
+  </figure>
+
+  <h2>Limitaciones y siguiente paso</h2>
+  <ul>
+    <li>El modelo es plano y cinemático: pivotes verticales, avance y salida nulos, sin neumáticos ni velocidad de avance.</li>
+    <li>Falta dimensionar los topes físicos de dirección, que deben limitar el giro por debajo de la singularidad.</li>
+  </ul>
+
+  <h2>Herramientas</h2>
+  <ul class="chips"><li>SolidWorks</li><li>MATLAB</li><li>Simulink</li><li>Simscape Multibody</li><li>GeoGebra</li><li>Cinemática de mecanismos</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Volver al inicio</a>
+</div></footer>
+</body>
+</html>

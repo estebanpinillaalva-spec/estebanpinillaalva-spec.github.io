@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aludec: KPIs de mantenimiento · Esteban Pinilla</title>
+<meta name="description" content="Automatización del cálculo semanal de MTBF y MTTR en el departamento de mantenimiento de Aludec.">
+<link rel="stylesheet" href="../assets/css/estilo.css">
+</head>
+<body>
+<!-- fuentes: brain/10-proyectos/caso-practicas-mantenimiento-kpis.md -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#casos">Casos</a><a href="../automatizacion.html">Automatización para empresas</a><a href="../index.html#contacto">Contacto</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Caso 01 · Prácticas en empresa</p>
+  <h1>El departamento de mantenimiento sigue calculando su MTBF y su MTTR con algo que construí, sin mí</h1>
+  <p class="lead">Automaticé en Excel, con ayuda de Claude, el cálculo semanal de los indicadores de fiabilidad de un departamento de mantenimiento de automoción. Lo siguen usando meses después de terminar mis prácticas.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">15–20 min → ~2 min</span><span class="etiqueta">por ejecución semanal (87–90 % menos)</span></div>
+    <div class="cifra"><span class="valor">1.370</span><span class="etiqueta">registros reales de mantenimiento (marzo y abril de 2026)</span></div>
+    <div class="cifra"><span class="valor">7</span><span class="etiqueta">problemas de datos reales resueltos y documentados</span></div>
+  </div>
+
+  <dl class="ficha">
+    <dt>Empresa</dt><dd>Aludec S.A., fabricante de componentes decorativos para automoción (grupo CIE Automotive)</dd>
+    <dt>Periodo</dt><dd>Abril y mayo de 2026</dd>
+    <dt>Papel</dt><dd>Prácticas en el Departamento de Mantenimiento</dd>
+    <dt>Autoría</dt><dd>Propia, construida con ayuda de Claude (IA). El tutor de prácticas autorizó nombrar a la empresa. Los datos de producción no se publican.</dd>
+  </dl>
+
+  <h2>El problema</h2>
+  <p>Cada semana, el encargado de mantenimiento extraía los datos de la base de datos interna, calculaba a mano el MTBF y el MTTR en una hoja de Excel aparte y después los pasaba a la hoja de seguimiento. Tardaba de 15 a 20 minutos, siempre lo hacía la misma persona y un cálculo manual así es fácil de equivocar.</p>
+
+  <figure class="figura diagrama">
+    <svg viewBox="0 0 900 300" role="img" aria-labelledby="diag-t">
+      <title id="diag-t">Proceso antes y después de la automatización</title>
+      <style>
+        .c{fill:#fff;stroke:#22303f;stroke-width:1.5}.ca{fill:#fff;stroke:#8a2c3b;stroke-width:2}
+        .t{font:600 15px "IBM Plex Mono",Consolas,monospace;fill:#22303f}
+        .s{font:400 14px "IBM Plex Sans","Segoe UI",Arial,sans-serif;fill:#1f2933}
+        .f{stroke:#5b6673;stroke-width:1.5;marker-end:url(#fl)}
+      </style>
+      <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b6673"/></marker></defs>
+      <text class="t" x="10" y="28">ANTES · 15–20 min/semana · siempre el encargado</text>
+      <rect class="c" x="10" y="45" width="190" height="70"/><text class="s" x="22" y="75">Base de datos</text><text class="s" x="22" y="97">interna</text>
+      <rect class="c" x="240" y="45" width="190" height="70"/><text class="s" x="252" y="75">Extracción</text><text class="s" x="252" y="97">manual</text>
+      <rect class="c" x="470" y="45" width="190" height="70"/><text class="s" x="482" y="75">MTBF y MTTR a mano</text><text class="s" x="482" y="97">en un Excel aparte</text>
+      <rect class="c" x="700" y="45" width="190" height="70"/><text class="s" x="712" y="75">Copia a la hoja</text><text class="s" x="712" y="97">de seguimiento</text>
+      <line class="f" x1="200" y1="80" x2="238" y2="80"/><line class="f" x1="430" y1="80" x2="468" y2="80"/><line class="f" x1="660" y1="80" x2="698" y2="80"/>
+      <text class="t" x="10" y="183" style="fill:#8a2c3b">AHORA · ~2 min/semana · lo hace el departamento</text>
+      <rect class="ca" x="10" y="200" width="190" height="70"/><text class="s" x="22" y="230">Base de datos</text><text class="s" x="22" y="252">interna</text>
+      <rect class="ca" x="240" y="200" width="190" height="70"/><text class="s" x="252" y="230">Pegar en una</text><text class="s" x="252" y="252">sola hoja DATOS</text>
+      <rect class="ca" x="470" y="200" width="420" height="70"/><text class="s" x="482" y="230">Las fórmulas reparten por tipo y semana y calculan</text><text class="s" x="482" y="252">MTBF, MTTR y horas en las hojas de análisis</text>
+      <line class="f" x1="200" y1="235" x2="238" y2="235"/><line class="f" x1="430" y1="235" x2="468" y2="235"/>
+    </svg>
+    <figcaption>Diagrama propio del proceso. No contiene datos de la empresa.</figcaption>
+  </figure>
+
+  <h2>Qué hice</h2>
+  <ul>
+    <li>Un libro de 17 hojas donde los datos brutos entran por una sola hoja, <code>DATOS</code>, y las fórmulas los reparten a las hojas de análisis por tipo de mantenimiento y por semana.</li>
+    <li>Cálculo de MTBF (horas del departamento ÷ número de correctivos) y MTTR (horas del tipo × 60 ÷ número de correctivos), con horas por semana, intervenciones, horas por tipo, promedios mensuales y totales anuales.</li>
+    <li>Nueve tipos de mantenimiento con nombres cerrados: correctivos y preventivos de máquina, molde, periféricos y planta, más mejoras.</li>
+    <li>Una hoja <code>TUTORIAL</code> pensada para el personal del departamento: los nombres admitidos, qué celdas no tocar y qué revisar cuando algo no cuadra.</li>
+  </ul>
+
+  <h2>Lo que se torció y cómo lo resolví</h2>
+  <p>Los datos reales no eran limpios. Estos son los siete problemas que aparecieron:</p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>#</th><th>Fallo</th><th>Causa</th><th>Solución</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>La semana calculada entre hojas devolvía 0</td><td><code>WEEKNUM</code> sobre rangos de otra hoja no se evaluaba en el entorno donde Claude probaba el libro (LibreOffice)</td><td>Columnas auxiliares de mes y semana precalculadas en la propia hoja <code>DATOS</code></td></tr>
+      <tr><td class="num">2</td><td>Los datos de marzo no caían en las columnas de marzo</td><td>Se usaba la semana ISO, no la definición de semana de la empresa</td><td>Numeración de semanas de domingo a viernes</td></tr>
+      <tr><td class="num">3</td><td>Valores de 2025 en las dos primeras semanas</td><td>Celdas fijas heredadas de la plantilla original</td><td>Limpieza de 27 celdas fijas</td></tr>
+      <tr><td class="num">4</td><td>Las semanas se contaban como bloques de 7 días del mes</td><td>Fórmula basada en el día del mes</td><td>Semana del año con primer domingo dinámico, validada contra una semana real (128 registros)</td></tr>
+      <tr><td class="num">5</td><td>Fechas pegadas como texto que no se contaban (recurrente)</td><td><code>YEAR()</code> no funciona sobre texto</td><td>Conversión a fecha y fórmula tolerante a texto</td></tr>
+      <tr><td class="num">6</td><td>Un tipo escrito en singular no se contaba (recurrente)</td><td>Los datos usaban un nombre distinto del que buscaba la fórmula</td><td>Normalización y <strong>desplegable de validación</strong> con los 9 nombres canónicos</td></tr>
+      <tr><td class="num">7</td><td>Una columna quedaba con números fijos al añadir semanas</td><td>La fórmula no llegaba a las filas nuevas</td><td>Fórmula aplicada hasta la fila 5.000</td></tr>
+    </tbody>
+  </table></div>
+  <p>Los dos fallos que se repetían los arreglé <strong>restringiendo la entrada</strong>: un desplegable con los nueve valores válidos y normalizar los datos antes de calcular. Retocar la fórmula no habría bastado.</p>
+
+  <h2 id="resultado">Resultado</h2>
+  <ul>
+    <li>De 15–20 minutos a unos 2 minutos por ejecución. Con frecuencia semanal, pasa de 13–17 horas al año a 1,7 horas.</li>
+    <li>El cálculo es determinista y se puede rastrear hasta los registros de origen.</li>
+    <li><strong>El departamento lo sigue usando sin mí.</strong> El ahorro de tiempo es modesto. Lo que más valoro es que la herramienta siguió funcionando después de irme, porque dejé el traspaso documentado.</li>
+  </ul>
+
+  <h2>Limitaciones</h2>
+  <ul>
+    <li>Las fórmulas llegan hasta la fila 5.000 de <code>DATOS</code>; si se supera, hay que ampliarlas.</li>
+    <li>El libro trabaja con un año en curso y no acumula varios en paralelo.</li>
+  </ul>
+
+  <h2>Herramientas</h2>
+  <ul class="chips"><li>Excel</li><li>Fórmulas</li><li>Validación de datos</li><li>MTBF / MTTR</li><li>Mantenimiento industrial</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Volver al inicio</a>
+</div></footer>
+</body>
+</html>

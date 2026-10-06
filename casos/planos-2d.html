@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asistente de planos 2D · Esteban Pinilla</title>
+<meta name="description" content="Motor en Python que genera planos de fabricación desde modelos 3D de SolidWorks, diseñado para que la IA interprete y un motor determinista ejecute.">
+<link rel="stylesheet" href="../assets/css/estilo.css">
+</head>
+<body>
+<!-- fuentes: brain/10-proyectos/asistente-planos-2d.md; git log y src/ de Desktop/asistente-planos-2d (último commit 2026-07-29); notas/planos-pdf (exportaciones de notas/planos-generados) -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#casos">Casos</a><a href="../automatizacion.html">Automatización para empresas</a><a href="../index.html#contacto">Contacto</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Caso 03 · Proyecto propio <span class="estado">en desarrollo</span></p>
+  <h1>Generar el plano de fabricación desde el modelo 3D sin dejar que la IA toque la geometría</h1>
+  <p class="lead">Un motor en Python que, a partir de una pieza de SolidWorks, crea su plano 2D por la API del programa. Es la base sobre la que irá un asistente de IA.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">8/8</span><span class="etiqueta">piezas del banco de pruebas con plano generado</span></div>
+    <div class="cifra"><span class="valor">3 vistas</span><span class="etiqueta">alzado, isométrica y sección opcional, con marcas de centro</span></div>
+    <div class="cifra"><span class="valor">ISO 273</span><span class="etiqueta">la normativa está en un fichero de datos aparte del código</span></div>
+  </div>
+
+  <dl class="ficha">
+    <dt>Tipo</dt><dd>Proyecto propio de aprendizaje y portfolio, iniciado en julio de 2026</dd>
+    <dt>Estado</dt><dd>Fase 0 cerrada. Fase 1 en curso: el motor ya genera planos con vistas en las 8 piezas del banco de pruebas. La acotación y la capa de IA son las siguientes fases</dd>
+    <dt>Autoría</dt><dd>Propia. Desarrollado con agentes de IA (Claude Code y Codex) bajo mi especificación y verificación</dd>
+  </dl>
+
+  <h2>El problema</h2>
+  <p>Pasar de un modelo 3D a un plano de fabricación es trabajo repetitivo de oficina técnica: colocar vistas, elegir escala, acotar, rellenar el cajetín y exportar. Si se le pide a un modelo de lenguaje que lo haga moviendo la geometría, el resultado no es fiable ni repetible.</p>
+
+  <h2>Qué hice</h2>
+  <ul>
+    <li>Antes de programar, extraje los criterios de delineación de planos reales y elegí el banco de pruebas midiendo las piezas, no por su nombre.</li>
+    <li>Construí, dirigiendo a Codex y Claude, un motor en Python que maneja SolidWorks por su API COM: crea el plano en una maqueta A3 fija, coloca el alzado con escala 1:1 preferente, la isométrica con su propia escala y las marcas de centro, sin invadir el cajetín, y lo exporta a PDF.</li>
+    <li>Los agujeros de paso según ISO 273 están en un fichero de datos, no repartidos por el código.</li>
+    <li>Para la capa de IA fijé una regla: la IA solo traducirá la intención a un JSON con un esquema cerrado, el motor lo ejecutará y las señales de verificación (reconstrucción, errores legibles, comprobación de norma) volverán a la IA para que se corrija. La IA nunca hará llamadas directas a la geometría.</li>
+  </ul>
+
+  <h2>Lo que se torció y cómo lo resolví</h2>
+  <ul>
+    <li>Las vistas se salían del marco por el margen izquierdo. Corregí el cálculo del área útil.</li>
+    <li>Las isométricas salían demasiado pequeñas porque su tamaño se estimaba como si fueran un cuadrado. Corregí la estimación.</li>
+    <li>La detección de taladros fallaba con un error <code>DISP_E_MEMBERNOTFOUND</code> de la API COM. Se localizó la causa y se corrigió.</li>
+    <li>La vista de sección no sirve en todas las piezas, así que pasó a ser opcional (<code>--con-seccion</code>) en lugar de ponerse por defecto.</li>
+  </ul>
+
+  <h2 id="resultado">Resultado actual</h2>
+  <p>Así sale hoy un plano del motor, sin intervención manual. Todavía no lleva cotas ni el cajetín relleno: es el punto de partida de la siguiente fase.</p>
+  <div class="galeria">
+    <figure class="figura"><img src="../assets/img/planos/enlace-bieletas.webp" alt="Plano 2D generado por el motor para la pieza enlace de bieletas, con alzado, isométrica y marcas de centro"><figcaption>Enlace de bieletas, plano generado por el motor.</figcaption></figure>
+    <figure class="figura"><img src="../assets/img/planos/soporte-caliper.webp" alt="Plano 2D generado por el motor para la pieza soporte de caliper"><figcaption>Soporte de caliper, plano generado por el motor.</figcaption></figure>
+  </div>
+
+  <h2>Limitaciones y siguiente paso</h2>
+  <ul>
+    <li>Falta la acotación automática, el relleno del cajetín, la lista de materiales y la exportación a DXF.</li>
+    <li>Siguiente paso: acotar según norma y, después, manejar el motor en lenguaje natural mediante MCP.</li>
+  </ul>
+
+  <h2>Herramientas</h2>
+  <ul class="chips"><li>Python</li><li>SolidWorks API (COM)</li><li>pywin32</li><li>Claude Code</li><li>Codex</li><li>ISO 273</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Volver al inicio</a>
+</div></footer>
+</body>
+</html>

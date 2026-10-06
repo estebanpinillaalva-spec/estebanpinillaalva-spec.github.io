@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JARVIS: asistente de voz ampliado · Esteban Pinilla</title>
+<meta name="description" content="Ampliación de un asistente de voz open source con memoria local, coordinación de agentes y acciones con confirmación.">
+<link rel="stylesheet" href="../assets/css/estilo.css">
+</head>
+<body>
+<!-- fuentes: brain/10-proyectos/mark-xxxix-jarvis.md (incl. §Autoría, comparación contra el original del 2026-10-05) -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#casos">Casos</a><a href="../automatizacion.html">Automatización para empresas</a><a href="../index.html#contacto">Contacto</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Caso 04 · Proyecto propio sobre base open source</p>
+  <h1>Amplié un asistente de voz open source hasta convertirlo en mi sistema de trabajo</h1>
+  <p class="lead">Partí de MARK XXXIX-OR, un asistente de voz para el ordenador, y le añadí memoria local, correo, calendario, coordinación con agentes de programación y un modo que funciona sin conexión.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">14.335</span><span class="etiqueta">líneas de Python propias en 45 módulos nuevos</span></div>
+    <div class="cifra"><span class="valor">566</span><span class="etiqueta">pruebas automáticas, sin fallos en la última verificación</span></div>
+    <div class="cifra"><span class="valor">~11.600</span><span class="etiqueta">líneas del proyecto original del que partí</span></div>
+  </div>
+
+  <div class="autoria">
+    <strong>Base:</strong> <a href="https://github.com/FatihMakes/Mark-XXXIX-OR">MARK XXXIX-OR de FatihMakes</a>, open source: voz en tiempo real con Gemini Live, interfaz HUD en PyQt y acciones básicas.
+    <strong>Mi aportación:</strong> 45 módulos nuevos, unas 3.200 líneas cambiadas en ficheros originales y 60 ficheros de pruebas. Medido comparando fichero a fichero con el original. Lo implementé dirigiendo a agentes de IA (Codex y Claude): yo especifico, decido y verifico.
+  </div>
+
+  <h2>El problema</h2>
+  <p>El asistente original conversaba, ejecutaba acciones y tenía una memoria básica, pero no estaba conectado a mi base de conocimiento, ni a mi correo ni a mi calendario, y dejaba de servir cuando caía la conexión con el modelo de voz.</p>
+
+  <h2>Qué añadí</h2>
+  <ul>
+    <li>Memoria persistente local conectada a mi base de conocimiento en Markdown, con índice, memoria de sesión aprobada y una visualización de las notas como constelación según sus enlaces.</li>
+    <li>Correo de Gmail por IMAP y SMTP, con la política de qué se lee y qué se envía separada del transporte; calendario iCalendar con lectura, escritura y vista semanal.</li>
+    <li>Un puente local para coordinar desde JARVIS las sesiones de Codex y Claude, con permisos acotados.</li>
+    <li>Un enrutador de órdenes local y determinista para seguir funcionando cuando Gemini Live no está disponible.</li>
+    <li>Rutinas declarativas, índice de documentos y preparación de impresión 3D en Bambu Studio.</li>
+  </ul>
+
+  <h2>Decisiones de seguridad</h2>
+  <ul>
+    <li><strong>Las notas son datos, nunca instrucciones.</strong> Una nota no puede ordenarle nada al asistente ni borrarse por una orden ambigua.</li>
+    <li><strong>Confirmación en dos pasos</strong> para las acciones sensibles.</li>
+    <li><strong>Nada físico arranca solo:</strong> la impresión 3D se prepara y se abre con confirmación; imprimir sigue siendo manual.</li>
+    <li><strong>Prioridad a lo local:</strong> menos coste y funciones útiles aunque falle el servicio externo.</li>
+  </ul>
+
+  <h2 id="resultado">Resultado</h2>
+  <figure class="figura"><img src="../assets/img/jarvis/constelacion.webp" alt="Ventana de JARVIS con la base de conocimiento vista como constelación de notas enlazadas"><figcaption>JARVIS en funcionamiento, con la memoria local vista como constelación de notas. El registro de actividad está desenfocado.</figcaption></figure>
+  <p>La última verificación, del 5 de octubre de 2026, pasó dos veces las 566 pruebas sin fallos.</p>
+
+  <h2>Limitaciones y siguiente paso</h2>
+  <ul>
+    <li>El reconocimiento de voz en español tiene un plan de mejora diseñado pero todavía sin implementar.</li>
+    <li>Está hecho para Windows y para mi forma de trabajar; no es un producto para terceros.</li>
+  </ul>
+
+  <h2>Herramientas</h2>
+  <ul class="chips"><li>Python</li><li>PyQt6</li><li>SQLite</li><li>Gemini Live</li><li>IMAP / SMTP</li><li>iCalendar</li><li>Codex</li><li>Claude Code</li><li>pytest</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Volver al inicio</a>
+</div></footer>
+</body>
+</html>
