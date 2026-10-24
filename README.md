@@ -1,6 +1,8 @@
 # Portfolio de Esteban Pinilla Álvarez
 
-Web personal con mis casos de ingeniería mecánica e industrial y de automatización con IA.
+*[English version below](#english)*
+
+Ingeniero mecánico por la Universidad de Vigo y estudiante del Máster en Ingeniería Industrial en la UC3M. Aquí recojo mis casos de ingeniería mecánica e industrial y de automatización con IA.
 
 **Web:** https://estebanpinillaalva-spec.github.io
 
@@ -17,25 +19,27 @@ Web personal con mis casos de ingeniería mecánica e industrial y de automatiza
 
 Cada caso indica qué parte es mía y qué parte se hizo en equipo o con ayuda de IA.
 
-## Cómo está hecha
-
-- **HTML y CSS escritos a mano**, sin frameworks ni paso de compilación. Se abre con doble clic y se publica tal cual en GitHub Pages.
-- **Estilo "cuaderno de ingeniería":** cuadrícula de papel de plano, IBM Plex Sans e IBM Plex Mono, azul marino y granate.
-- **Verificación automática en Python:**
-  - `tools/check_site.py`: enlaces rotos, rutas absolutas, imágenes sin texto alternativo, ficheros que no deben publicarse (hojas de cálculo, CAD) y peso de imágenes y vídeos.
-  - `tools/check_layout.py`: abre cada página con Playwright a 1280 y a 390 px, detecta desplazamiento horizontal y guarda capturas.
-  - `tests/`: pruebas con pytest sobre el verificador y sobre el contenido (por ejemplo, que las cifras del TFG sean las de la memoria entregada).
-
-## Ejecutar las comprobaciones
-
-```bash
-pip install pytest pillow pymupdf playwright
-python -m playwright install chromium
-python -m pytest -q
-python tools/check_site.py
-python tools/check_layout.py
-```
-
 ## Contacto
 
-estebanpinillaalva@gmail.com
+estebanpinillaalva@gmail.com · [LinkedIn](https://www.linkedin.com/in/esteban-pinilla-%C3%A1lvarez-0a0927230)
+
+---
+
+## English
+
+Mechanical engineer (University of Vigo) and MSc Industrial Engineering student at UC3M. This portfolio collects my mechanical and industrial engineering projects and my work on AI-driven automation.
+
+**Website:** https://estebanpinillaalva-spec.github.io/en/
+
+| Page | What it covers |
+|---|---|
+| [Home](en/index.html) | Introduction, the four case studies, other projects and contact |
+| [Case 01 · Aludec](en/cases/aludec-kpis.html) | Automated the weekly MTBF and MTTR calculation for an automotive maintenance department: from 15–20 min to ~2 min |
+| [Case 02 · Final degree project](en/cases/tfg-kart.html) | Diagnosis and redesign of a kart's steering in Simscape Multibody: Ackermann from 253% to 112%, verified in CAD |
+| [Case 03 · 2D drawings](en/cases/planos-2d.html) | Python engine that generates manufacturing drawings through the SolidWorks API (in progress) |
+| [Case 04 · JARVIS](en/cases/jarvis.html) | Extension of an open-source voice assistant with local memory, email, calendar and agents |
+| [Automation for companies](en/automation.html) | How I approach the automation of repetitive processes |
+
+Each case states which part is mine and which part was done in a team or with AI assistance.
+
+**Contact:** estebanpinillaalva@gmail.com · [LinkedIn](https://www.linkedin.com/in/esteban-pinilla-%C3%A1lvarez-0a0927230)

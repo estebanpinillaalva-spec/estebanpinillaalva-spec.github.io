@@ -32,6 +32,8 @@ header.sitio .marca { font: 600 15px var(--mono); color: var(--tinta); text-deco
 nav { display: flex; gap: 20px; flex-wrap: wrap; }
 nav a { font: 400 14px var(--mono); color: var(--suave); text-decoration: none; }
 nav a:hover, nav a[aria-current="page"] { color: var(--acento); }
+nav a.idioma { font-weight: 600; color: var(--tinta); border: 1px solid var(--linea); padding: 0 6px; border-radius: 3px; }
+nav a.idioma:hover { border-color: var(--acento); }
 
 main { padding: 48px 0 64px; }
 h1 { font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15; color: var(--tinta); margin: 8px 0 16px; }

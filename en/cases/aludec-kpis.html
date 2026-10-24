@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aludec: maintenance KPIs · Esteban Pinilla</title>
+<meta name="description" content="Automation of the weekly MTBF and MTTR calculation in Aludec's maintenance department.">
+<link rel="alternate" hreflang="es" href="https://estebanpinillaalva-spec.github.io/casos/aludec-kpis.html">
+<link rel="alternate" hreflang="en" href="https://estebanpinillaalva-spec.github.io/en/cases/aludec-kpis.html">
+<link rel="stylesheet" href="../../assets/css/estilo.css">
+</head>
+<body>
+<!-- sources: English version of ../../casos/aludec-kpis.html -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#cases">Case studies</a><a href="../automation.html">Automation for companies</a><a href="../index.html#contact">Contact</a><a class="idioma" href="../../casos/aludec-kpis.html" hreflang="es" lang="es">ES</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Case 01 · Internship</p>
+  <h1>The maintenance department still calculates its MTBF and MTTR with something I built, without me</h1>
+  <p class="lead">With help from Claude, I automated in Excel the weekly calculation of the reliability indicators of an automotive maintenance department. They are still using it months after my internship ended.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">15–20 min → ~2 min</span><span class="etiqueta">per weekly run (87–90% less)</span></div>
+    <div class="cifra"><span class="valor">1,370</span><span class="etiqueta">real maintenance records (March and April 2026)</span></div>
+    <div class="cifra"><span class="valor">7</span><span class="etiqueta">real data problems solved and documented</span></div>
+  </div>
+
+  <dl class="ficha">
+    <dt>Company</dt><dd>Aludec S.A., manufacturer of decorative automotive components (CIE Automotive group)</dd>
+    <dt>Period</dt><dd>April and May 2026</dd>
+    <dt>Role</dt><dd>Intern in the Maintenance Department</dd>
+    <dt>Authorship</dt><dd>My own, built with help from Claude (AI). My internship supervisor authorised naming the company. Production data is not published.</dd>
+  </dl>
+
+  <h2>The problem</h2>
+  <p>Every week, the maintenance supervisor pulled the data from the internal database, calculated MTBF and MTTR by hand in a separate Excel sheet and then copied them into the tracking sheet. It took 15 to 20 minutes, it was always the same person, and a manual calculation like that is easy to get wrong.</p>
+
+  <figure class="figura diagrama">
+    <svg viewBox="0 0 900 300" role="img" aria-labelledby="diag-t">
+      <title id="diag-t">Process before and after the automation</title>
+      <style>
+        .c{fill:#fff;stroke:#22303f;stroke-width:1.5}.ca{fill:#fff;stroke:#8a2c3b;stroke-width:2}
+        .t{font:600 15px "IBM Plex Mono",Consolas,monospace;fill:#22303f}
+        .s{font:400 14px "IBM Plex Sans","Segoe UI",Arial,sans-serif;fill:#1f2933}
+        .f{stroke:#5b6673;stroke-width:1.5;marker-end:url(#fl)}
+      </style>
+      <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b6673"/></marker></defs>
+      <text class="t" x="10" y="28">BEFORE · 15–20 min/week · always the supervisor</text>
+      <rect class="c" x="10" y="45" width="190" height="70"/><text class="s" x="22" y="75">Internal</text><text class="s" x="22" y="97">database</text>
+      <rect class="c" x="240" y="45" width="190" height="70"/><text class="s" x="252" y="75">Manual</text><text class="s" x="252" y="97">extraction</text>
+      <rect class="c" x="470" y="45" width="190" height="70"/><text class="s" x="482" y="75">MTBF and MTTR by</text><text class="s" x="482" y="97">hand in another sheet</text>
+      <rect class="c" x="700" y="45" width="190" height="70"/><text class="s" x="712" y="75">Copy into the</text><text class="s" x="712" y="97">tracking sheet</text>
+      <line class="f" x1="200" y1="80" x2="238" y2="80"/><line class="f" x1="430" y1="80" x2="468" y2="80"/><line class="f" x1="660" y1="80" x2="698" y2="80"/>
+      <text class="t" x="10" y="183" style="fill:#8a2c3b">NOW · ~2 min/week · done by the department</text>
+      <rect class="ca" x="10" y="200" width="190" height="70"/><text class="s" x="22" y="230">Internal</text><text class="s" x="22" y="252">database</text>
+      <rect class="ca" x="240" y="200" width="190" height="70"/><text class="s" x="252" y="230">Paste into a single</text><text class="s" x="252" y="252">DATOS sheet</text>
+      <rect class="ca" x="470" y="200" width="420" height="70"/><text class="s" x="482" y="230">Formulas split by type and week and calculate</text><text class="s" x="482" y="252">MTBF, MTTR and hours in the analysis sheets</text>
+      <line class="f" x1="200" y1="235" x2="238" y2="235"/><line class="f" x1="430" y1="235" x2="468" y2="235"/>
+    </svg>
+    <figcaption>My own process diagram. It contains no company data.</figcaption>
+  </figure>
+
+  <h2>What I did</h2>
+  <ul>
+    <li>A 17-sheet workbook where raw data enters through a single sheet, <code>DATOS</code>, and formulas distribute it to the analysis sheets by maintenance type and by week.</li>
+    <li>MTBF calculation (department hours ÷ number of corrective jobs) and MTTR (hours of the type × 60 ÷ number of corrective jobs), with hours per week, interventions, hours per type, monthly averages and yearly totals.</li>
+    <li>Nine maintenance types with fixed names: corrective and preventive maintenance for machines, moulds, peripherals and the plant, plus improvements.</li>
+    <li>A <code>TUTORIAL</code> sheet written for the department staff: the accepted names, which cells not to touch and what to check when something does not add up.</li>
+  </ul>
+
+  <h2>What went wrong and how I fixed it</h2>
+  <p>The real data was not clean. These are the seven problems that came up:</p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>#</th><th>Failure</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>The week calculated across sheets returned 0</td><td><code>WEEKNUM</code> over ranges in another sheet was not evaluated in the environment where Claude tested the workbook (LibreOffice)</td><td>Helper columns for month and week precalculated in the <code>DATOS</code> sheet itself</td></tr>
+      <tr><td class="num">2</td><td>March data did not land in the March columns</td><td>The ISO week was used instead of the company's own week definition</td><td>Week numbering from Sunday to Friday</td></tr>
+      <tr><td class="num">3</td><td>2025 values in the first two weeks</td><td>Hard-coded cells inherited from the original template</td><td>Cleanup of 27 hard-coded cells</td></tr>
+      <tr><td class="num">4</td><td>Weeks were counted as 7-day blocks of the month</td><td>Formula based on the day of the month</td><td>Week of the year with a dynamic first Sunday, validated against a real week (128 records)</td></tr>
+      <tr><td class="num">5</td><td>Dates pasted as text were not counted (recurring)</td><td><code>YEAR()</code> does not work on text</td><td>Conversion to date and a text-tolerant formula</td></tr>
+      <tr><td class="num">6</td><td>A type written in the singular was not counted (recurring)</td><td>The data used a different name from the one the formula looked for</td><td>Normalisation and a <strong>validation drop-down</strong> with the 9 canonical names</td></tr>
+      <tr><td class="num">7</td><td>One column was left with fixed numbers when weeks were added</td><td>The formula did not reach the new rows</td><td>Formula extended to row 5,000</td></tr>
+    </tbody>
+  </table></div>
+  <p>I fixed the two recurring failures by <strong>restricting the input</strong>: a drop-down with the nine valid values and normalising the data before calculating. Tweaking the formula would not have been enough.</p>
+
+  <h2 id="result">Result</h2>
+  <ul>
+    <li>From 15–20 minutes to about 2 minutes per run. On a weekly basis, that goes from 13–17 hours a year to 1.7 hours.</li>
+    <li>The calculation is deterministic and can be traced back to the source records.</li>
+    <li><strong>The department still uses it without me.</strong> The time saving is modest. What I value most is that the tool kept working after I left, because I documented the handover.</li>
+  </ul>
+
+  <h2>Limitations</h2>
+  <ul>
+    <li>The formulas reach row 5,000 of <code>DATOS</code>; beyond that they need to be extended.</li>
+    <li>The workbook handles one current year and does not accumulate several in parallel.</li>
+  </ul>
+
+  <h2>Tools</h2>
+  <ul class="chips"><li>Excel</li><li>Formulas</li><li>Data validation</li><li>MTBF / MTTR</li><li>Industrial maintenance</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Back to home</a>
+</div></footer>
+</body>
+</html>

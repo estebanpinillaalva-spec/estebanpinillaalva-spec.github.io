@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JARVIS: an extended voice assistant · Esteban Pinilla</title>
+<meta name="description" content="Extension of an open-source voice assistant with local memory, agent coordination and actions that require confirmation.">
+<link rel="alternate" hreflang="es" href="https://estebanpinillaalva-spec.github.io/casos/jarvis.html">
+<link rel="alternate" hreflang="en" href="https://estebanpinillaalva-spec.github.io/en/cases/jarvis.html">
+<link rel="stylesheet" href="../../assets/css/estilo.css">
+</head>
+<body>
+<!-- sources: English version of ../../casos/jarvis.html -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#cases">Case studies</a><a href="../automation.html">Automation for companies</a><a href="../index.html#contact">Contact</a><a class="idioma" href="../../casos/jarvis.html" hreflang="es" lang="es">ES</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Case 04 · Personal project on an open-source base</p>
+  <h1>I extended an open-source voice assistant until it became my working system</h1>
+  <p class="lead">I started from MARK XXXIX-OR, a voice assistant for the desktop, and added local memory, email, calendar, coordination with coding agents and a mode that works offline.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">14,335</span><span class="etiqueta">lines of my own Python in 45 new modules</span></div>
+    <div class="cifra"><span class="valor">566</span><span class="etiqueta">automated tests, no failures in the latest verification</span></div>
+    <div class="cifra"><span class="valor">~11,600</span><span class="etiqueta">lines in the original project I started from</span></div>
+  </div>
+
+  <div class="autoria">
+    <strong>Base:</strong> <a href="https://github.com/FatihMakes/Mark-XXXIX-OR">MARK XXXIX-OR by FatihMakes</a>, open source: real-time voice with Gemini Live, a PyQt HUD interface and basic actions.
+    <strong>My contribution:</strong> 45 new modules, about 3,200 lines changed in original files and 60 test files. Measured by comparing file by file against the original. I implemented it by directing AI agents (Codex and Claude): I specify, decide and verify.
+  </div>
+
+  <h2>The problem</h2>
+  <p>The original assistant could hold a conversation, run actions and had a basic memory, but it was not connected to my knowledge base, my email or my calendar, and it stopped working whenever the connection to the voice model dropped.</p>
+
+  <h2>What I added</h2>
+  <ul>
+    <li>Persistent local memory connected to my Markdown knowledge base, with an index, approved session memory and a view of the notes as a constellation based on their links.</li>
+    <li>Gmail over IMAP and SMTP, with the policy of what is read and what is sent kept separate from the transport; an iCalendar calendar with reading, writing and a weekly view.</li>
+    <li>A local bridge to coordinate Codex and Claude sessions from JARVIS, with scoped permissions.</li>
+    <li>A local, deterministic command router so it keeps working when Gemini Live is unavailable.</li>
+    <li>Declarative routines, a document index and 3D-print preparation in Bambu Studio.</li>
+  </ul>
+
+  <h2>Security decisions</h2>
+  <ul>
+    <li><strong>Notes are data, never instructions.</strong> A note cannot give the assistant orders or be deleted by an ambiguous command.</li>
+    <li><strong>Two-step confirmation</strong> for sensitive actions.</li>
+    <li><strong>Nothing physical starts on its own:</strong> 3D printing is prepared and opened with confirmation; printing itself remains manual.</li>
+    <li><strong>Local first:</strong> lower cost and useful features even when the external service fails.</li>
+  </ul>
+
+  <h2 id="result">Result</h2>
+  <figure class="figura"><img src="../../assets/img/jarvis/constelacion.webp" alt="JARVIS window with the knowledge base shown as a constellation of linked notes"><figcaption>JARVIS running, with the local memory shown as a constellation of notes. The activity log is blurred.</figcaption></figure>
+  <p>The latest verification, on 5 October 2026, passed all 566 tests twice with no failures.</p>
+
+  <h2>Limitations and next step</h2>
+  <ul>
+    <li>Spanish speech recognition has an improvement plan designed but not yet implemented.</li>
+    <li>It is built for Windows and for the way I work; it is not a product for third parties.</li>
+  </ul>
+
+  <h2>Tools</h2>
+  <ul class="chips"><li>Python</li><li>PyQt6</li><li>SQLite</li><li>Gemini Live</li><li>IMAP / SMTP</li><li>iCalendar</li><li>Codex</li><li>Claude Code</li><li>pytest</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Back to home</a>
+</div></footer>
+</body>
+</html>

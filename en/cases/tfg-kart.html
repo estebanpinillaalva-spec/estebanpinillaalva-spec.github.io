@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final degree project: go-kart steering · Esteban Pinilla</title>
+<meta name="description" content="Diagnosis and redesign of a go-kart steering system with simulation in Simscape Multibody.">
+<link rel="alternate" hreflang="es" href="https://estebanpinillaalva-spec.github.io/casos/tfg-kart.html">
+<link rel="alternate" hreflang="en" href="https://estebanpinillaalva-spec.github.io/en/cases/tfg-kart.html">
+<link rel="stylesheet" href="../../assets/css/estilo.css">
+</head>
+<body>
+<!-- sources: English version of ../../casos/tfg-kart.html -->
+<header class="sitio"><div class="hoja">
+  <a class="marca" href="../index.html">ESTEBAN PINILLA</a>
+  <nav><a href="../index.html#cases">Case studies</a><a href="../automation.html">Automation for companies</a><a href="../index.html#contact">Contact</a><a class="idioma" href="../../casos/tfg-kart.html" hreflang="es" lang="es">ES</a></nav>
+</div></header>
+
+<main><div class="hoja">
+  <p class="eyebrow">Case 02 · Final degree project</p>
+  <h1>The outer wheel barely turned: I found the mechanism's dead point and redesigned the steering</h1>
+  <p class="lead">I simulated in Simscape Multibody the steering of a go-kart designed in SolidWorks, found out why it did not meet Ackermann geometry, corrected it and validated the result in CAD.</p>
+
+  <div class="cifras">
+    <div class="cifra"><span class="valor">253% → 127%</span><span class="etiqueta">simulated Ackermann before and after the redesign (100% = ideal)</span></div>
+    <div class="cifra"><span class="valor">112%</span><span class="etiqueta">Ackermann verified in CAD (17.81° inner / 14.81° outer)</span></div>
+    <div class="cifra"><span class="valor">±13° → ~24°</span><span class="etiqueta">the mechanism's singularity moves away from the operating range</span></div>
+  </div>
+
+  <dl class="ficha">
+    <dt>Project</dt><dd>Final degree project “Design and integration of the steering and transmission system for an amateur go-kart”. BEng in Mechanical Engineering, University of Vigo. Grade: 8.5/10</dd>
+    <dt>Date</dt><dd>2026</dd>
+    <dt>Code</dt><dd><a href="https://github.com/estebanpinillaalva-spec/tfg-kart-direccion">github.com/estebanpinillaalva-spec/tfg-kart-direccion</a>: MATLAB scripts, model, plots and the full thesis (in Spanish)</dd>
+    <dt>Authorship</dt><dd>CAD design of the go-kart done as a team with Martín. <strong>The simulation, analysis and redesign of the steering are my own work.</strong> I developed the MATLAB scripts by directing an AI agent.</dd>
+  </dl>
+
+  <h2>The problem</h2>
+  <p>In a corner, the inner wheel has to turn more than the outer one so that both follow concentric paths without slipping. That is Ackermann geometry. It matters even more on a go-kart because there is no differential. The design target was 100% Ackermann: using GeoGebra I calculated that the steering arm had to form 107.62° with the kingpin axis.</p>
+  <p>When I simulated the assembly in Simscape, the first version did not behave like that: the outer wheel barely turned, Ackermann exceeded 250%, the two sides responded differently and the mechanism reached a singularity at ±13°.</p>
+
+  <h2>What I did</h2>
+  <ol>
+    <li><strong>From SolidWorks to Simscape.</strong> I exported the assembly and imported it with <code>smimport</code> as a multibody model.</li>
+    <li><strong>Diagnosis.</strong> The steering knuckles were correctly designed and checked, so I looked for the cause elsewhere: the steering plate. With the anchor point offset to the side and far from the tie rods, the four-bar linkage on the outer side worked close to its dead point and the outer wheel received almost no rotation.</li>
+    <li><strong>Redesign.</strong> I moved the anchor of both tie rods closer to the steering column axis, with a single central anchor. This makes the mechanism symmetric again.</li>
+    <li><strong>Parametric model built from code.</strong> With an AI agent I developed MATLAB scripts that build the corrected model with the real geometry (619.15 mm track, 1,056.57 mm wheelbase, 305 mm tie rod and 120 mm arm), simulate it, calibrate the arm and generate the plots and the animation.</li>
+    <li><strong>Validation in CAD.</strong> I articulated the steering in SolidWorks and measured the real angles to compare them with the simulation.</li>
+  </ol>
+
+  <h2>What went wrong and how I fixed it</h2>
+  <ul>
+    <li>The first results gave an Ackermann of more than twice the ideal. Instead of explaining them away, I analysed the CAD model until I found that the error came from the steering plate.</li>
+    <li>The simulation of the corrected model gave 127% Ackermann, a slight excess I attributed to small measurement errors. I cross-checked it against the articulated CAD, which gave <strong>112%</strong> (17.81° / 14.81°).</li>
+  </ul>
+
+  <h2 id="result">Result</h2>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Indicator</th><th class="num">Side anchor (before)</th><th class="num">Central anchor (after)</th></tr></thead>
+    <tbody>
+      <tr><td>Simulated Ackermann % (right / left turn)</td><td class="num">≈253% / ≈238%</td><td class="num">≈127% / ≈127%</td></tr>
+      <tr><td>Error relative to the ideal outer wheel</td><td class="num">−2.95° / −1.27°</td><td class="num">−0.89° / −0.89°</td></tr>
+      <tr><td>Mechanism singularity</td><td class="num">±13°</td><td class="num">~24°</td></tr>
+      <tr><td>Symmetry between left and right turns</td><td class="num">asymmetric</td><td class="num">symmetric</td></tr>
+      <tr><td>Ackermann verified in CAD</td><td class="num">—</td><td class="num">112%</td></tr>
+    </tbody>
+  </table></div>
+
+  <figure class="figura">
+    <img src="../../assets/img/tfg/comparativa.webp" alt="Comparison between the faulty and the corrected steering plate: Ackermann percentage and steering limit">
+    <figcaption>Ackermann percentage and steering limit with the faulty plate (side anchor) and the corrected one (central anchor). My own work; plot labels in Spanish.</figcaption>
+  </figure>
+  <div class="galeria">
+    <figure class="figura"><img src="../../assets/img/tfg/interior-exterior.webp" alt="Inner wheel angle versus outer wheel angle compared with the ideal Ackermann curve"><figcaption>Inner versus outer wheel, compared with the ideal curve.</figcaption></figure>
+    <figure class="figura"><img src="../../assets/img/tfg/error.webp" alt="Ackermann error along the steering travel in the corrected model"><figcaption>Ackermann error in the corrected model.</figcaption></figure>
+    <figure class="figura"><img src="../../assets/img/tfg/angulos.webp" alt="Angles of both steering knuckles while steering"><figcaption>Knuckle angles while steering.</figcaption></figure>
+    <figure class="figura"><img src="../../assets/img/tfg/diagrama.webp" alt="Ackermann diagram: inner versus outer angle, with the ideal curve and parallel steering"><figcaption>Ackermann diagram of the corrected model.</figcaption></figure>
+  </div>
+  <figure class="figura">
+    <video controls preload="none" poster="../../assets/img/tfg/animacion-poster.webp" src="../../assets/video/tfg/animacion-direccion.mp4"></video>
+    <figcaption>2D animation of the corrected steering, generated from the simulation.</figcaption>
+  </figure>
+
+  <h2>Limitations and next step</h2>
+  <ul>
+    <li>The model is planar and kinematic: vertical kingpins, zero caster and kingpin inclination, no tyres and no forward speed.</li>
+    <li>The physical steering stops still need to be sized; they must limit the steering angle below the singularity.</li>
+  </ul>
+
+  <h2>Tools</h2>
+  <ul class="chips"><li>SolidWorks</li><li>MATLAB</li><li>Simulink</li><li>Simscape Multibody</li><li>GeoGebra</li><li>Mechanism kinematics</li></ul>
+</div></main>
+
+<footer class="sitio"><div class="hoja">
+  <span>Esteban Pinilla Álvarez</span><a href="mailto:estebanpinillaalva@gmail.com">estebanpinillaalva@gmail.com</a><a href="../index.html">Back to home</a>
+</div></footer>
+</body>
+</html>
